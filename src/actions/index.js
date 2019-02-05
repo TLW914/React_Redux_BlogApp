@@ -7,11 +7,18 @@ export const fetchPostsAndUsers = () => {
         await dispatch(fetchPosts());
         //console.log('fetched posts!');
         //console.log(getState().posts);
-       const userIds = _.uniq(_.map(getState().posts, 'userId'))
-       //console.log(userIds)
-       userIds.forEach((id)=> dispatch(fetchUser(id)));
+        _.chain(getState().posts)
+            .map('userId')
+            .uniq()
+            .forEach((id) => dispatch(fetchUser(id)))
+            .value();
     };
-}
+     //    // unchained version
+    //    const userIds = _.uniq(_.map(getState().posts, 'userId'))
+    //    //console.log(userIds)
+    //    userIds.forEach((id)=> dispatch(fetchUser(id)));
+    // 
+};
 
 export const fetchPosts = () => {
     return async (dispatch) => {
